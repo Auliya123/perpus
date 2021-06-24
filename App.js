@@ -1,21 +1,37 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { NavigationContainer } from "@react-navigation/native";
+import "react-native-gesture-handler";
+import HomeScreen from "./src/screens/HomeScreen";
+import ListScreen from "./src/screens/ListScreen";
+import SigninScreen from "./src/screens/SigninScreen";
+import SettingScreen from "./src/screens/SettingScreen";
+import { createStackNavigator } from "@react-navigation/stack";
+import { setNavigator, navigationRef } from "./src/navigationRef";
 
-export default function App() {
+function Drawer() {
+  const Drawer = createDrawerNavigator();
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Drawer.Navigator>
+      <Drawer.Screen name="Home" component={HomeScreen} />
+      <Drawer.Screen name="List" component={ListScreen} />
+      <Drawer.Screen name="Setting" component={SettingScreen} />
+    </Drawer.Navigator>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+function App() {
+  const Stack = createStackNavigator();
+  return (
+    <NavigationContainer ref={navigationRef}>
+      <Stack.Navigator>
+        <Stack.Screen name="Signin" component={SigninScreen} />
+        <Stack.Screen name="Drawer" component={Drawer} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+export default () => {
+  return <App />;
+};
