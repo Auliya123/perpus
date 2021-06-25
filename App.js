@@ -9,6 +9,7 @@ import SettingScreen from "./src/screens/SettingScreen";
 import { createStackNavigator } from "@react-navigation/stack";
 import { setNavigator, navigationRef } from "./src/navigationRef";
 import { Provider as AuthProvider } from "./src/context/AuthContext";
+import LoadingScreen from "./src/screens/LoadingScreen";
 
 function Drawer() {
   const Drawer = createDrawerNavigator();
@@ -30,6 +31,7 @@ function App() {
           headerShown: false,
         }}
       >
+        <Stack.Screen name="Loading" component={LoadingScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Drawer" component={Drawer} />
       </Stack.Navigator>
