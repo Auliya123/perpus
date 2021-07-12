@@ -43,7 +43,13 @@ const LoginScreen = () => {
         autoCapitalize="none"
         autoCorrect={false}
       />
-      {message ? <Text style={styles.errorMessage}>{message}</Text> : null}
+      {message ? (
+        status === true ? (
+          <Text style={styles.successfulMessage}>{message}</Text>
+        ) : (
+          <Text style={styles.errorMessage}>{message}</Text>
+        )
+      ) : null}
       <Spacer />
       <Spacer>
         <Button
@@ -79,6 +85,13 @@ const styles = StyleSheet.create({
   errorMessage: {
     fontSize: 16,
     color: "red",
+    marginLeft: 15,
+    marginBottom: 10,
+    marginTop: -10,
+  },
+  successfulMessage: {
+    fontSize: 16,
+    color: "#39A6A3",
     marginLeft: 15,
     marginBottom: 10,
     marginTop: -10,
