@@ -43,13 +43,7 @@ const LoginScreen = () => {
         autoCapitalize="none"
         autoCorrect={false}
       />
-      {message ? (
-        status === true ? (
-          <Text style={styles.successfulMessage}>{message}</Text>
-        ) : (
-          <Text style={styles.errorMessage}>{message}</Text>
-        )
-      ) : null}
+      {message ? <Text style={styles.errorMessage}>{message}</Text> : null}
       <Spacer />
       <Spacer>
         <Button
