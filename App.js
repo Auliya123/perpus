@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import "react-native-gesture-handler";
 import HomeScreen from "./src/screens/HomeScreen";
 import LoginScreen from "./src/screens/LoginScreen";
-import SettingScreen from "./src/screens/SettingScreen";
+import ProfileScreen from "./src/screens/ProfileScreen";
 import { createStackNavigator } from "@react-navigation/stack";
 import { setNavigator, navigationRef } from "./src/navigationRef";
 import { Provider as AuthProvider } from "./src/context/AuthContext";
@@ -30,7 +30,7 @@ function Drawer() {
     <Drawer.Navigator>
       <Drawer.Screen name="Home" component={HomeScreen} />
       <Drawer.Screen name="ListBorrow" component={ListBorrowScreen} />
-      <Drawer.Screen name="Setting" component={SettingScreen} />
+      <Drawer.Screen name="Profile" component={ProfileScreen} />
       <Drawer.Screen name="Logout" component={LogoutScreen} />
     </Drawer.Navigator>
   );
