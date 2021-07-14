@@ -5,6 +5,7 @@ import {
   TextInput,
   FlatList,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import { Context as BorrowContext } from "../context/BorrowContext";
 import HeaderCustom from "../components/HeaderCustom";
@@ -14,6 +15,7 @@ import Moment from "moment";
 import { extendMoment } from "moment-range";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { FontAwesome } from "@expo/vector-icons";
 
 const moment = extendMoment(Moment);
 
@@ -23,12 +25,14 @@ const CheckoutScreen = ({ navigation }) => {
   // console.log();
   const { state, addCart, checkout, deleteCart } = useContext(BorrowContext);
   const [startDate, setStartDate] = useState(Moment().format());
-  const [endDate, setEndDate] = useState();
+  const [endDate, setEndDate] = useState(Moment().add(3, "days").toDate());
   const [checked, setChecked] = useState(false);
 
   const range = moment.range(startDate, endDate);
   const days = range.diff("days"); // 92
   console.log(`days`, days);
+
+  console.log("end", endDate);
 
   const total = days
     ? state.cartItems.reduce((a, c) => a + c.price * c.qty * days, 0)
@@ -36,22 +40,30 @@ const CheckoutScreen = ({ navigation }) => {
 
   console.log(`total`, state);
 
-  const handleTextEnd = () =>
-    endDate ? endDate.toDateString() : "No value Selected";
+  // const handleTextEnd = () =>
+  //   endDate ? endDate.toDateString() : "No value Selected";
 
   return (
     <>
       <HeaderCustom callback={() => navigation.goBack()} title="Pinjam Buku" />
       <View style={styles.body}>
+        <View></View>
         <Text style={styles.title}>Daftar buku yang akan dipinjam</Text>
-        <View style={styles.detailBook}>
-          <FlatList
-            data={state.cartItems}
-            renderItem={({ item }) => {
-              console.log(`item`, item);
-              console.log(`state.cartItems`, state.cartItems);
-              return (
-                <SafeAreaView>
+        <FlatList
+          data={state.cartItems}
+          renderItem={({ item }) => {
+            console.log(`item`, item);
+            console.log(`state.cartItems`, state.cartItems);
+            return (
+              <View style={styles.detailBook}>
+                <Image
+                  source={{
+                    uri:
+                      "https://images-na.ssl-images-amazon.com/images/I/51vSbWpF+dS._AC_SX184_.jpg",
+                  }}
+                  style={styles.imageBook}
+                />
+                <View style={styles.detailBookText}>
                   <Text style={styles.bookName}>{item.name}</Text>
                   <Text>Oleh {item.author}</Text>
                   <SafeAreaView style={styles.counter}>
@@ -85,78 +97,76 @@ const CheckoutScreen = ({ navigation }) => {
                       }}
                     />
                   </SafeAreaView>
-                </SafeAreaView>
-              );
-            }}
-            keyExtractor={(item) => item.book_id.toString()}
-          />
+                </View>
+              </View>
+            );
+          }}
+          keyExtractor={(item) => item.book_id.toString()}
+        />
+        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <Text style={styles.addBook}>
+            <FontAwesome name="plus" size={15} /> Tambah buku lainnya
+          </Text>
+        </TouchableOpacity>
+        <View style={styles.dateArea}>
+          <Text style={styles.subtitle}>Atur Tanggal</Text>
+          <View style={styles.dateContainer}>
+            <DatePicker
+              value={startDate}
+              title="Date Picker"
+              isNullable
+              containerStyle={styles.date}
+              onDateChange={(date) => setStartDate(date)}
+              text={Moment().format("ddd MMMM D YYYY")}
+              disabled
+              isNullable={false}
+            />
+            <Spacer />
+            <Button
+              title="-"
+              type="outline"
+              buttonStyle={{
+                width: 28,
+                height: 20,
+              }}
+              disabled
+            />
+            <Spacer />
+            <DatePicker
+              value={endDate}
+              title="Date Picker"
+              containerStyle={styles.date}
+              onDateChange={(date) => setEndDate(date)}
+              text={endDate.toDateString("ddd MMMM D YYYY")}
+            />
+          </View>
         </View>
-        <Spacer />
-        <Text style={styles.subtitle}>Atur Tanggal</Text>
-        <View style={styles.dateContainer}>
-          <DatePicker
-            value={startDate}
-            title="Date Picker"
-            isNullable
-            containerStyle={styles.date}
-            onDateChange={(date) => setStartDate(date)}
-            text={Moment().format("ddd MMMM D YYYY")}
-            disabled
-            isNullable={false}
-          />
-          <Spacer />
-          <Button
-            title="-"
-            type="outline"
-            buttonStyle={{
-              width: 28,
-              height: 20,
-            }}
-            disabled
-          />
-          <Spacer />
-          <DatePicker
-            value={endDate}
-            title="Date Picker"
-            containerStyle={styles.date}
-            onDateChange={(date) => setEndDate(date)}
-            text={handleTextEnd()}
-            minDate={Moment().format()}
-            isNullable={false}
-          />
-        </View>
+
         <Text style={styles.subtitle}>Detail Biaya</Text>
         <Spacer />
-        <View style={styles.detailBayar}>
-          <FlatList
-            data={state.cartItems}
-            renderItem={({ item }) => {
-              return (
-                <>
-                  <View>
-                    <Text>{item.name}</Text>
-                    <Text>{item.qty}pcs</Text>
-                  </View>
-                  <Text>{item.price}</Text>
-                </>
-              );
-            }}
-            keyExtractor={(item) => item.book_id.toString()}
-          />
-        </View>
-        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-          <Text>Add other book</Text>
-        </TouchableOpacity>
+        <FlatList
+          data={state.cartItems}
+          renderItem={({ item }) => {
+            return (
+              <>
+                <View style={styles.detailBayar}>
+                  <Text>{item.name}</Text>
+                  <Text>Rp. {item.price}</Text>
+                </View>
+                <Text>{item.qty}pcs</Text>
+              </>
+            );
+          }}
+          keyExtractor={(item) => item.book_id.toString()}
+        />
         <Divider />
         <View style={styles.detailBayar}>
           <View>
             <Text>Total Bayar</Text>
             <Text>{endDate ? days : 0} Hari</Text>
           </View>
-          <Text>{endDate ? total : 0}</Text>
+          <Text>Rp. {endDate ? total : 0}</Text>
         </View>
-        <Spacer />
-        <Spacer />
         <CheckBox
           title="Dengan ini saya menyetujui untuk melakukan pengembalian sesuai tanggal yang telah ditentukan. Apabila melewati tanggal tersebut,saya bersedia membayar denda yang telah ditentukan"
           textStyle={{
@@ -165,7 +175,7 @@ const CheckoutScreen = ({ navigation }) => {
             fontWeight: "normal",
           }}
           size={20}
-          containerStyle={{ width: "90%" }}
+          containerStyle={{ width: "90%", marginTop: 50 }}
           checked={checked}
           onPress={() => setChecked(true)}
           onLongPress={() => setChecked(false)}
@@ -205,9 +215,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   detailBook: {
-    marginLeft: "50%",
-    flexDirection: "column",
+    flexDirection: "row",
     flex: 1,
+    alignItems: "center",
   },
   jumlah: {
     marginTop: 40,
@@ -247,10 +257,24 @@ const styles = StyleSheet.create({
   },
   detailBayar: {
     flexDirection: "row",
-    flexWrap: "nowrap",
     justifyContent: "space-between",
-    maxWidth: "95%",
     flex: 1,
+  },
+  addBook: {
+    color: "orange",
+    height: 30,
+  },
+  imageBook: {
+    height: 150,
+    width: 100,
+    marginHorizontal: 15,
+    marginVertical: 5,
+  },
+  detailBookText: {
+    flexDirection: "column",
+  },
+  dateArea: {
+    marginVertical: 0,
   },
 });
 
