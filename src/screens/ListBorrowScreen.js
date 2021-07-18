@@ -1,10 +1,13 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import {
   View,
   Text,
   FlatList,
   StyleSheet,
   TouchableOpacity,
+  Button,
+  Image,
+  ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Header, Card, Divider } from "react-native-elements";
@@ -17,6 +20,33 @@ import Spacer from "../components/Spacer";
 
 const ListBorrowScreen = ({ navigation }) => {
   const { state, fetchReturn } = useContext(ReturnContext);
+  const [page, setPage] = useState(1);
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [pageCurrent, setPageCurrent] = useState(1);
+
+  // const getData = async () => {
+  //   console.log("getData");
+  //   const apiURL =
+  //     "https://jsonplaceholder.typicode.com/photos?_limit=10&_page=" +
+  //     pageCurrent;
+  //   fetch(apiURL)
+  //     .then((res) => res.json())
+  //     .then((resJSON) => {
+  //       setData(data.concat(resJSON));
+  //       setIsLoading(false);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   console.log("useEffect");
+  //   setIsLoading(true);
+  //   fetchReturn(pageCurrent);
+  //   setData(data.concat(state));
+  //   setIsLoading(false);
+  //   return () => {};
+  // }, [pageCurrent]);
+
   const Tab = createMaterialTopTabNavigator();
 
   useEffect(() => {
@@ -27,13 +57,39 @@ const ListBorrowScreen = ({ navigation }) => {
     return willFocusSubscription;
   }, []);
 
-  console.log(`state`, state);
+  console.log(`page`, state);
+  // console.log("dataa", data);
+
+  // const renderItem = ({ item }) => {
+  //   return (
+  //     <View style={styles.content}>
+  //       <Text style={styles.itemText}>
+  //         {Moment(item.start_date).format("DD MMM YYYY")}
+  //       </Text>
+  //     </View>
+  //   );
+  // };
+
+  const renderFooter = () => {
+    return isLoading ? (
+      <View style={styles.loader}>
+        <ActivityIndicator size="large" />
+      </View>
+    ) : null;
+  };
+
+  // const handleLoadMore = () => {
+  //   console.log(`handleMore`);
+  //   setPageCurrent(pageCurrent + 1);
+  //   setIsLoading(true);
+  // };
 
   function BorrowScreen() {
     return (
       <View style={styles.table}>
         <FlatList
           data={state.pinjam}
+          // renderItem={renderItem}
           renderItem={({ item }) => {
             return (
               <>
@@ -66,7 +122,9 @@ const ListBorrowScreen = ({ navigation }) => {
             );
           }}
           keyExtractor={(item) => item.id.toString()}
-          horizontal={false}
+          ListFooterComponent={renderFooter}
+          // onEndReached={handleLoadMore}
+          // onEndReachedThreshold={1}
         />
       </View>
     );
@@ -126,7 +184,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    margin: 15,
+    margin: 30,
     flexDirection: "row",
     alignItems: "baseline",
   },
@@ -135,6 +193,24 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderWidth: 1,
     padding: 5,
+  },
+  itemRow: {
+    borderBottomColor: "#ccc",
+    marginBottom: 10,
+    borderBottomWidth: 1,
+  },
+  itemImage: {
+    width: "100%",
+    height: 200,
+    resizeMode: "cover",
+  },
+  itemText: {
+    fontSize: 16,
+    padding: 5,
+  },
+  loader: {
+    marginTop: 10,
+    alignItems: "center",
   },
 });
 

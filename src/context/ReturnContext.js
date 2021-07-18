@@ -6,7 +6,7 @@ const returnReducer = (state, action) => {
     case "fetch_return":
       return action.payload;
     case "fetch_return_detail":
-      return action.payload;
+      return { ...action.payload, message: "" };
     case "return_book":
       return {
         ...state,
@@ -17,10 +17,10 @@ const returnReducer = (state, action) => {
   }
 };
 
-const fetchReturn = (dispatch) => async () => {
-  const response = await bookApi.get("/borrow/index/10");
+const fetchReturn = (dispatch) => async (page) => {
+  const response = await bookApi.get(`/borrow/index/1`);
   const data = response.data.data;
-  console.log(`data`, data);
+  console.log(`data fetch`, data);
 
   const pinjam = data.filter((x) => x.status === "N");
   const kembali = data.filter((x) => x.status === "F");

@@ -6,6 +6,8 @@ const VerifyReturnScreen = ({ route, navigation }) => {
   const { returnBook, state } = useContext(ReturnContext);
   const { id } = route.params;
 
+  console.log(`state`, state);
+
   return (
     <>
       <VerifyInput
