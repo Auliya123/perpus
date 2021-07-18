@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   View,
   FlatList,
@@ -10,9 +10,15 @@ import {
 import { Header, Card } from "react-native-elements";
 import { Context as BookContext } from "../context/BookContext";
 import Spacer from "../components/Spacer";
+import { checkConnected } from "../../netInfo";
 
 const HomeScreen = ({ navigation }) => {
   const { state, fetchBooks } = useContext(BookContext);
+  const [connectStatus, setConnectStatus] = useState(false);
+
+  checkConnected().then((res) => {
+    setConnectStatus(res);
+  });
 
   useEffect(() => {
     fetchBooks();
@@ -38,6 +44,13 @@ const HomeScreen = ({ navigation }) => {
             justifyContent: "center",
           }}
         />
+        {!connectStatus ? (
+          <Text
+            style={{ backgroundColor: "#FF616D", color: "white", padding: 10 }}
+          >
+            Tidak ada koneksi internet
+          </Text>
+        ) : null}
       </View>
       <View style={styles.body}>
         <Image
