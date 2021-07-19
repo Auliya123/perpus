@@ -38,7 +38,7 @@ const CheckoutScreen = ({ navigation }) => {
     ? state.cartItems.reduce((a, c) => a + c.price * c.qty * days, 0)
     : 0;
 
-  console.log(`total`, state);
+  console.log(`total`, total);
 
   // const handleTextEnd = () =>
   //   endDate ? endDate.toDateString() : "No value Selected";
@@ -151,7 +151,7 @@ const CheckoutScreen = ({ navigation }) => {
               <>
                 <View style={styles.detailBayar}>
                   <Text>{item.name}</Text>
-                  <Text>Rp. {item.price}</Text>
+                  <Text>Rp. {item.price * item.qty}</Text>
                 </View>
                 <Text>{item.qty}pcs</Text>
               </>
@@ -160,12 +160,15 @@ const CheckoutScreen = ({ navigation }) => {
           keyExtractor={(item) => item.book_id.toString()}
         />
         <Divider />
+
         <View style={styles.detailBayar}>
           <View>
             <Text>Total Bayar</Text>
             <Text>{endDate ? days : 0} Hari</Text>
           </View>
-          <Text>Rp. {endDate ? total : 0}</Text>
+          <View>
+            <Text>Rp. {endDate ? total : 0}</Text>
+          </View>
         </View>
         <CheckBox
           title="Dengan ini saya menyetujui untuk melakukan pengembalian sesuai tanggal yang telah ditentukan. Apabila melewati tanggal tersebut,saya bersedia membayar denda yang telah ditentukan"

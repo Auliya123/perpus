@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    margin: 30,
+    margin: 10,
     flexDirection: "row",
     alignItems: "baseline",
   },
