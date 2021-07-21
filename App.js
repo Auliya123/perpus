@@ -1,5 +1,10 @@
 import React from "react";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import "react-native-gesture-handler";
 import HomeScreen from "./src/screens/HomeScreen";
@@ -23,11 +28,12 @@ import SuccessfulReturnScreen from "./src/screens/SuccessfulReturnScreen";
 import VerifyProfileScreen from "./src/screens/VerifyProfileScreen";
 import SuccessfulBorrowScreen from "./src/screens/SuccessfulBorrowScreen";
 import ListBorrowScreen from "./src/screens/ListBorrowScreen";
+import DrawerContent from "./src/components/DrawerContent";
 
 function Drawer() {
   const Drawer = createDrawerNavigator();
   return (
-    <Drawer.Navigator>
+    <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />}>
       <Drawer.Screen name="Home" component={HomeScreen} />
       <Drawer.Screen name="ListBorrow" component={ListBorrowScreen} />
       <Drawer.Screen name="Profile" component={ProfileScreen} />
