@@ -4,6 +4,7 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HeaderCustom from "../components/HeaderCustom";
@@ -12,6 +13,7 @@ import { useEffect } from "react";
 import { Context as AuthContext } from "../context/AuthContext";
 import bookApi from "../api/bookApi";
 import Spacer from "../components/Spacer";
+import { Ionicons } from "@expo/vector-icons";
 
 const ProfileScreen = ({ navigation }) => {
   const { state } = useContext(AuthContext);
@@ -20,10 +22,13 @@ const ProfileScreen = ({ navigation }) => {
     mobile: "",
     email: "",
     alamat: "",
+    password: "",
   });
   const [password, setPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [isTextSecure, setIsTextSecure] = useState(true);
+  const [isTextSecure2, setIsTextSecure2] = useState(true);
+
   console.log(`state`, state);
 
   useEffect(() => {
@@ -132,9 +137,19 @@ const ProfileScreen = ({ navigation }) => {
                 onChangeText={(value) => {
                   setPassword(value);
                 }}
-                secureTextEntry
+                secureTextEntry={isTextSecure}
                 autoCapitalize="none"
                 autoCorrect={false}
+                rightIcon={
+                  <TouchableOpacity
+                    onPress={() => setIsTextSecure((prev) => !prev)}
+                  >
+                    <Ionicons
+                      size={25}
+                      name={isTextSecure ? "eye-off-outline" : "eye-outline"}
+                    />
+                  </TouchableOpacity>
+                }
               />
               <Input
                 label="Ulangi kata sandi baru"
@@ -142,9 +157,19 @@ const ProfileScreen = ({ navigation }) => {
                 onChangeText={(value) => {
                   setData({ ...data, password: value });
                 }}
-                secureTextEntry
+                secureTextEntry={isTextSecure2}
                 autoCapitalize="none"
                 autoCorrect={false}
+                rightIcon={
+                  <TouchableOpacity
+                    onPress={() => setIsTextSecure2((prev) => !prev)}
+                  >
+                    <Ionicons
+                      size={25}
+                      name={isTextSecure2 ? "eye-off-outline" : "eye-outline"}
+                    />
+                  </TouchableOpacity>
+                }
               />
               {message ? <Text>{message}</Text> : null}
             </View>

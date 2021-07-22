@@ -1,15 +1,17 @@
 import React, { useState, useContext } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { Input, Button } from "react-native-elements";
 import Spacer from "../components/Spacer";
 import { Context } from "../context/AuthContext";
 import { useFonts } from "expo-font";
+import { Ionicons } from "@expo/vector-icons";
 
 const LoginScreen = () => {
   const {
     state: { message },
     login,
   } = useContext(Context);
+  const [isTextSecure, setIsTextSecure] = useState(true);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -39,9 +41,17 @@ const LoginScreen = () => {
         value={password}
         onChangeText={(newPassword) => setPassword(newPassword)}
         placeholder="Password"
-        secureTextEntry
+        secureTextEntry={isTextSecure}
         autoCapitalize="none"
         autoCorrect={false}
+        rightIcon={
+          <TouchableOpacity onPress={() => setIsTextSecure((prev) => !prev)}>
+            <Ionicons
+              size={25}
+              name={isTextSecure ? "eye-off-outline" : "eye-outline"}
+            />
+          </TouchableOpacity>
+        }
       />
       {message ? (
         <Text
