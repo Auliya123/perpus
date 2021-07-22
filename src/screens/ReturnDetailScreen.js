@@ -12,14 +12,41 @@ import bookApi from "../api/bookApi";
 
 const ReturnDetailScreen = ({ route, navigation }) => {
   const { id } = route.params;
-  const { state, fetchReturnDetail } = useContext(ReturnContext);
+  const { state, fetchReturnDetail, reset } = useContext(ReturnContext);
+  const { state: book, fetchDetailBook } = useContext(BookContext);
+  const [data, setData] = useState([]);
+
   let detail = [];
 
-  console.log(`state`, state);
+  console.log(`state return detail`, state);
+
+  const fetchBook = async (book_id) => {
+    const response = await bookApi.get(`/book/view/${book_id}`);
+    console.log(`response book`, response.data);
+    const items = data.slice();
+    items.push({
+      title: response.data.data.name,
+    });
+    setData(items);
+    // fetchDetailBook(book_id);
+
+    console.log(`items`, items);
+    // setData((prevState) => {
+    //   console.log("prev", prevState);
+    //   return { ...prevState.book, book: response.data.data.name };
+    // });
+  };
 
   useEffect(() => {
+    console.log("useEffe");
     fetchReturnDetail(id);
+
+    return () => {
+      reset();
+    };
   }, []);
+
+  console.log(`book nih`, data);
 
   return (
     <View>
@@ -27,6 +54,7 @@ const ReturnDetailScreen = ({ route, navigation }) => {
         callback={() => navigation.goBack()}
         title="Detail Pinjaman"
       />
+      <Text>Hello</Text>
       {state.data ? (
         <View style={styles.body}>
           <View>
@@ -45,39 +73,22 @@ const ReturnDetailScreen = ({ route, navigation }) => {
             <Spacer />
             <Divider />
             <Spacer />
+
             <FlatList
-              data={state.data.borrowd}
-              keyExtractor={(item) => item.book_id.toString()}
-              renderItem={({ item }) => {
-                return (
-                  <Text>
-                    Rp {item.price}, {item.qty}
-                  </Text>
-                );
-              }}
-            />
-            {/* <FlatList
-              data={detail}
+              data={state.bookDetail}
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => {
                 return (
                   <>
                     <View style={styles.detailBook}>
-                      <Text>{item.name}</Text>
+                      <Text>{item.title}</Text>
                       <Text style={styles.detail}>Oleh: {item.author}</Text>
-                      <Spacer />
-                      <Spacer />
-                      <Spacer />
-                      <Spacer />
-
-                      <Text>
-                        Rp {item.fineamt}, {item.qty} pcs
-                      </Text>
                     </View>
                   </>
                 );
               }}
-            /> */}
+            />
+
             <Spacer />
             <Divider />
             <Spacer />

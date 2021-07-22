@@ -12,13 +12,18 @@ const returnReducer = (state, action) => {
         ...state,
         message: action.payload.message,
       };
+    case "reset":
+      return {
+        bookDetail: [],
+        data: {},
+      };
     default:
       return state;
   }
 };
 
 const fetchReturn = (dispatch) => async (page) => {
-  const response = await bookApi.get(`/borrow/index/1`);
+  const response = await bookApi.get(`/borrow/index/10`);
   const data = response.data.data;
   console.log(`data fetch`, data);
 
@@ -31,8 +36,39 @@ const fetchReturn = (dispatch) => async (page) => {
 const fetchReturnDetail = (dispatch) => async (id) => {
   const response = await bookApi.get(`/borrow/view/${id}`);
   console.log(`response.data`, response.data);
-  dispatch({ type: "fetch_return_detail", payload: response.data });
-  return response.data;
+  let detail = [];
+  let items = detail.slice();
+
+  const fetch = async (book_id) => {
+    console.log("fetch");
+    const detailBook = await bookApi.get(`/book/view/${book_id}`);
+    console.log("detailBook", detailBook.data.data);
+    items.push({
+      title: detailBook.data.data.name,
+      id: detailBook.data.data.id,
+      author: detailBook.data.data.author,
+    });
+    console.log("itemhi", items);
+    console.log("items", items);
+    console.log("items ada isinya");
+    dispatch({
+      type: "fetch_return_detail",
+      payload: { ...response.data, bookDetail: items },
+    });
+    return response.data;
+  };
+
+  response.data.data.borrowd.map((x) => {
+    console.log(x.book_id);
+    // console.log("detailBook", detailBook);
+    fetch(x.book_id);
+  });
+
+  console.log("items", items);
+  console.log("items", detail);
+  // if (items !== []) {
+
+  // }
 };
 
 const returnBook = (dispatch) => async (
@@ -69,8 +105,12 @@ const returnBook = (dispatch) => async (
   }
 };
 
+const reset = (dispatch) => () => {
+  dispatch({ type: "reset" });
+};
+
 export const { Provider, Context } = createDataContext(
   returnReducer,
-  { fetchReturn, fetchReturnDetail, returnBook },
+  { fetchReturn, fetchReturnDetail, returnBook, reset },
   []
 );
