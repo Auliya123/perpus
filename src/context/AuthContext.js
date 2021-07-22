@@ -8,10 +8,7 @@ const authReducer = (state, action) => {
   switch (action.type) {
     case "login":
       return {
-        message: action.payload.data.message,
-        token: action.payload.data.apikey_account,
-        userId: action.payload.data.usr_id,
-        email: action.payload.email,
+        ...action.payload,
       };
     case "logout":
       return { token: null, message: "", email: "", userId: null };
@@ -32,7 +29,10 @@ const tryLocalLogin = (dispatch) => async () => {
 
 const login = (dispatch) => async ({ email, password }) => {
   const response = await bookApi.post("/login", { email, password });
-  dispatch({ type: "login", payload: { data: response.data, email } });
+  const getName = await bookApi.get(`/usr/view/${response.data.usr_id}`);
+  console.log(`getName.data`, getName.data);
+  const name = getName.data.data.name;
+  dispatch({ type: "login", payload: { data: response.data, email, name } });
   console.log(`response.data`, response.data);
   if (response.data.apikey_account) {
     await AsyncStorage.setItem("token", response.data.apikey_account);

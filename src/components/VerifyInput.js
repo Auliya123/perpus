@@ -8,7 +8,7 @@ import { Context as AuthContext } from "../context/AuthContext";
 
 const VerifyInput = ({ data, buttonTitle, onSubmit, callback, message }) => {
   const {
-    state: { email, userId },
+    state: { email, userId, name },
   } = useContext(AuthContext);
   const [password, setPassword] = useState("");
 
@@ -18,7 +18,7 @@ const VerifyInput = ({ data, buttonTitle, onSubmit, callback, message }) => {
 
   return (
     <SafeAreaView style={styles.body}>
-      <Text style={styles.header}>Hai, {email}</Text>
+      <Text style={styles.header}>Hai, {name}</Text>
       <Text style={styles.subheader}>
         Masukkan kata sandi untuk melanjutkan
       </Text>
