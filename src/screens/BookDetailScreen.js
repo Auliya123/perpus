@@ -6,6 +6,7 @@ import { Text } from "react-native-elements";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { Context as BorrowContext } from "../context/BorrowContext";
 import HeaderCustom from "../components/HeaderCustom";
+import NumberFormat from "react-number-format";
 
 const BookDetailScreen = ({ route, navigation }) => {
   const Tab = createMaterialTopTabNavigator();
@@ -54,7 +55,15 @@ const BookDetailScreen = ({ route, navigation }) => {
               {state.book.data.name}
             </Text>
             <Text style={styles.text}>{state.book.data.author}</Text>
-            <Text style={styles.text}>Rp {state.book.data.fineamt}</Text>
+            <NumberFormat
+              value={state.book.data.price}
+              displayType={"text"}
+              thousandSeparator={true}
+              prefix={"Rp. "}
+              renderText={(formattedValue) => (
+                <Text style={styles.text}>{formattedValue}</Text>
+              )}
+            />
           </View>
           <Tab.Navigator>
             <Tab.Screen name="Sinopsis" component={SinopsisScreen} />

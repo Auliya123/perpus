@@ -52,7 +52,7 @@ const addCart = (dispatch) => (product, items, callback) => {
     cartItems.push({
       book_id: product.id,
       author: product.author,
-      price: product.fineamt,
+      price: product.price,
       name: product.name,
       qty: 1,
     });

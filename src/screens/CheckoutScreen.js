@@ -16,6 +16,7 @@ import { extendMoment } from "moment-range";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FontAwesome } from "@expo/vector-icons";
+import NumberFormat from "react-number-format";
 
 const moment = extendMoment(Moment);
 
@@ -47,7 +48,6 @@ const CheckoutScreen = ({ navigation }) => {
     <>
       <HeaderCustom callback={() => navigation.goBack()} title="Pinjam Buku" />
       <View style={styles.body}>
-        <View></View>
         <Text style={styles.title}>Daftar buku yang akan dipinjam</Text>
         <FlatList
           data={state.cartItems}
@@ -151,7 +151,15 @@ const CheckoutScreen = ({ navigation }) => {
               <>
                 <View style={styles.detailBayar}>
                   <Text>{item.name}</Text>
-                  <Text>Rp. {item.price * item.qty}</Text>
+                  <NumberFormat
+                    value={item.price * item.qty}
+                    displayType={"text"}
+                    thousandSeparator={true}
+                    prefix={"Rp. "}
+                    renderText={(formattedValue) => (
+                      <Text style={styles.text}>{formattedValue}</Text>
+                    )}
+                  />
                 </View>
                 <Text>{item.qty}pcs</Text>
               </>
@@ -167,7 +175,15 @@ const CheckoutScreen = ({ navigation }) => {
             <Text>{endDate ? days : 0} Hari</Text>
           </View>
           <View>
-            <Text>Rp. {endDate ? total : 0}</Text>
+            <NumberFormat
+              value={endDate ? total : 0}
+              displayType={"text"}
+              thousandSeparator={true}
+              prefix={"Rp. "}
+              renderText={(formattedValue) => (
+                <Text style={styles.text}>{formattedValue}</Text>
+              )}
+            />
           </View>
         </View>
         <CheckBox

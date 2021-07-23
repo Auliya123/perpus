@@ -11,6 +11,8 @@ import { Header, Card } from "react-native-elements";
 import { Context as BookContext } from "../context/BookContext";
 import Spacer from "../components/Spacer";
 import { checkConnected } from "../../netInfo";
+import NumberFormat from "react-number-format";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const HomeScreen = ({ navigation }) => {
   const { state, fetchBooks } = useContext(BookContext);
@@ -52,14 +54,14 @@ const HomeScreen = ({ navigation }) => {
           </Text>
         ) : null}
       </View>
-      <View style={styles.body}>
-        <Image
-          style={styles.Image}
-          source={{
-            uri:
-              "https://images.unsplash.com/photo-1553729784-e91953dec042?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80",
-          }}
-        />
+      <Image
+        style={styles.Image}
+        source={{
+          uri:
+            "https://images.unsplash.com/photo-1553729784-e91953dec042?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80",
+        }}
+      />
+      <SafeAreaView style={styles.body}>
         <View>
           {state.data ? (
             <FlatList
@@ -74,12 +76,31 @@ const HomeScreen = ({ navigation }) => {
                   >
                     <Card containerStyle={styles.list}>
                       <Card.Divider />
+                      <Card.Image style={styles.image}>
+                        <Image
+                          style={styles.image}
+                          source={{
+                            uri:
+                              "https://images-na.ssl-images-amazon.com/images/I/51vSbWpF+dS._AC_SX184_.jpg",
+                          }}
+                        />
+                      </Card.Image>
                       <Card.Title style={styles.title}>{item.name}</Card.Title>
                       <Card.FeaturedSubtitle style={styles.subtitle}>
                         <Text style={styles.grayText}>{item.author}</Text>
-                        <Spacer />
-                        <Spacer />
-                        <Text style={styles.greenText}>{item.price}</Text>
+                      </Card.FeaturedSubtitle>
+                      <Card.FeaturedSubtitle style={styles.subtitle}>
+                        <NumberFormat
+                          value={item.price}
+                          displayType={"text"}
+                          thousandSeparator={true}
+                          prefix={"Rp. "}
+                          renderText={(formattedValue) => (
+                            <Text style={styles.greenText}>
+                              {formattedValue}
+                            </Text>
+                          )}
+                        />
                       </Card.FeaturedSubtitle>
                     </Card>
                   </TouchableOpacity>
@@ -93,7 +114,7 @@ const HomeScreen = ({ navigation }) => {
             <Text>Wait ya</Text>
           )}
         </View>
-      </View>
+      </SafeAreaView>
     </>
   );
 };
@@ -102,16 +123,19 @@ const styles = StyleSheet.create({
   body: {
     padding: 20,
     flex: 1,
+    height: "100%",
   },
   Image: {
     height: 125,
+    margin: 20,
+    marginBottom: -30,
   },
   list: {
     width: 98,
     margin: 5,
     textAlign: "center",
     padding: 5,
-    height: 150,
+    flex: 1,
   },
   container: {
     justifyContent: "center",
@@ -124,8 +148,6 @@ const styles = StyleSheet.create({
   subtitle: {
     textAlign: "center",
     fontSize: 12,
-    position: "absolute",
-    marginTop: 100,
   },
   greenText: {
     fontWeight: "bold",
@@ -133,6 +155,10 @@ const styles = StyleSheet.create({
   },
   grayText: {
     color: "gray",
+  },
+  image: {
+    height: 100,
+    width: 98,
   },
 });
 

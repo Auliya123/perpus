@@ -9,33 +9,13 @@ import { Button, Divider } from "react-native-elements";
 import HeaderCustom from "../components/HeaderCustom";
 import Spacer from "../components/Spacer";
 import bookApi from "../api/bookApi";
+import NumberFormat from "react-number-format";
 
 const ReturnDetailScreen = ({ route, navigation }) => {
   const { id } = route.params;
   const { state, fetchReturnDetail, reset } = useContext(ReturnContext);
-  const { state: book, fetchDetailBook } = useContext(BookContext);
-  const [data, setData] = useState([]);
-
-  let detail = [];
 
   console.log(`state return detail`, state);
-
-  const fetchBook = async (book_id) => {
-    const response = await bookApi.get(`/book/view/${book_id}`);
-    console.log(`response book`, response.data);
-    const items = data.slice();
-    items.push({
-      title: response.data.data.name,
-    });
-    setData(items);
-    // fetchDetailBook(book_id);
-
-    console.log(`items`, items);
-    // setData((prevState) => {
-    //   console.log("prev", prevState);
-    //   return { ...prevState.book, book: response.data.data.name };
-    // });
-  };
 
   useEffect(() => {
     console.log("useEffe");
@@ -46,15 +26,12 @@ const ReturnDetailScreen = ({ route, navigation }) => {
     };
   }, []);
 
-  console.log(`book nih`, data);
-
   return (
     <View>
       <HeaderCustom
         callback={() => navigation.goBack()}
         title="Detail Pinjaman"
       />
-      <Text>Hello</Text>
       {state.data ? (
         <View style={styles.body}>
           <View>
@@ -94,7 +71,15 @@ const ReturnDetailScreen = ({ route, navigation }) => {
             <Spacer />
             <View style={styles.tanggal}>
               <Text>Biaya yang sudah dibayar</Text>
-              <Text style={styles.greenText}>Rp {state.data.borrow.total}</Text>
+              <NumberFormat
+                value={state.data.borrow.total}
+                displayType={"text"}
+                thousandSeparator={true}
+                prefix={"Rp. "}
+                renderText={(formattedValue) => (
+                  <Text style={styles.greenText}>{formattedValue}</Text>
+                )}
+              />
             </View>
           </View>
           <View style={styles.buttonElement}>
