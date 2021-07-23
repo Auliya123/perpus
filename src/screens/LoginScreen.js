@@ -8,7 +8,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 const LoginScreen = () => {
   const {
-    state: { message },
+    state: { data },
     login,
   } = useContext(Context);
   const [isTextSecure, setIsTextSecure] = useState(true);
@@ -53,15 +53,15 @@ const LoginScreen = () => {
           </TouchableOpacity>
         }
       />
-      {message ? (
+      {data ? (
         <Text
           style={
-            message === "Logged In"
+            data.message === "Logged In"
               ? styles.successfulMessage
               : styles.errorMessage
           }
         >
-          {message}
+          {data.message}
         </Text>
       ) : null}
       <Spacer />

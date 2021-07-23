@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import {
   createDrawerNavigator,
@@ -21,8 +21,14 @@ import { Ionicons } from "@expo/vector-icons";
 import { Context as AuthContext } from "../context/AuthContext";
 
 export default function DrawerContent(props) {
-  const { state } = useContext(AuthContext);
+  const { state, getName } = useContext(AuthContext);
   console.log(`state`, state);
+
+  useEffect(() => {
+    if (state.data) {
+      getName(state.data.usr_id);
+    }
+  }, []);
 
   return (
     <View style={{ flex: 1 }}>

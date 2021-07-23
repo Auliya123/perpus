@@ -33,7 +33,7 @@ const ProfileScreen = ({ navigation }) => {
 
   useEffect(() => {
     async function fetchDetail() {
-      const response = await bookApi.get(`/usr/view/${state.userId}`);
+      const response = await bookApi.get(`/usr/view/${state.data.usr_id}`);
       const responseData = response.data.data;
       setData({
         name: responseData.name,
