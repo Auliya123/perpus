@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Header, Card } from "react-native-elements";
 import { Context as BookContext } from "../context/BookContext";
+import { Context as AuthContext } from "../context/AuthContext";
 import Spacer from "../components/Spacer";
 import { checkConnected } from "../../netInfo";
 import NumberFormat from "react-number-format";
@@ -16,6 +17,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 const HomeScreen = ({ navigation }) => {
   const { state, fetchBooks } = useContext(BookContext);
+  const {
+    state: { data },
+    getName,
+  } = useContext(AuthContext);
+
   const [connectStatus, setConnectStatus] = useState(false);
 
   checkConnected().then((res) => {
@@ -29,6 +35,23 @@ const HomeScreen = ({ navigation }) => {
     });
     return willFocusSubscription;
   }, []);
+
+  useEffect(
+    () =>
+      navigation.addListener("beforeRemove", (e) => {
+        e.preventDefault();
+      }),
+    [navigation]
+  );
+
+  useEffect(() => {
+    getName(data.usr_id);
+
+    const willFocusSubscription = navigation.addListener("focus", () => {
+      getName(data.usr_id);
+    });
+    return willFocusSubscription;
+  }, [data]);
 
   return (
     <>

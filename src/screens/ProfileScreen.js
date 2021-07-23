@@ -74,10 +74,7 @@ const ProfileScreen = ({ navigation }) => {
 
   return (
     <>
-      <HeaderCustom
-        callback={() => navigation.navigate("Home")}
-        title="Pengaturan"
-      />
+      <HeaderCustom callback={() => navigation.goBack()} title="Pengaturan" />
       <ScrollView style={styles.body}>
         {data ? (
           <>

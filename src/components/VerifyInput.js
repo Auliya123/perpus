@@ -1,24 +1,23 @@
 import React, { useContext, useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Spacer from "./Spacer";
 import { Input, Button } from "react-native-elements";
-import { Context as ReturnContext } from "../context/ReturnContext";
 import { Context as AuthContext } from "../context/AuthContext";
+import { Ionicons } from "@expo/vector-icons";
 
 const VerifyInput = ({ data, buttonTitle, onSubmit, callback, message }) => {
-  const {
-    state: { email, userId, name },
-  } = useContext(AuthContext);
+  const { state } = useContext(AuthContext);
   const [password, setPassword] = useState("");
+  const [isTextSecure, setIsTextSecure] = useState(true);
 
   // console.log(`message`, message);
 
-  console.log(`data`, data);
+  console.log(`data`, state);
 
   return (
     <SafeAreaView style={styles.body}>
-      <Text style={styles.header}>Hai, {name}</Text>
+      <Text style={styles.header}>Hai, {state.name}</Text>
       <Text style={styles.subheader}>
         Masukkan kata sandi untuk melanjutkan
       </Text>
@@ -27,11 +26,21 @@ const VerifyInput = ({ data, buttonTitle, onSubmit, callback, message }) => {
         placeholder="Password"
         value={password}
         onChangeText={(newPassword) => setPassword(newPassword)}
-        secureTextEntry={true}
+        secureTextEntry={isTextSecure}
+        rightIcon={
+          <TouchableOpacity onPress={() => setIsTextSecure((prev) => !prev)}>
+            <Ionicons
+              size={25}
+              name={isTextSecure ? "eye-off-outline" : "eye-outline"}
+            />
+          </TouchableOpacity>
+        }
       />
       <Button
         title={buttonTitle}
-        onPress={() => onSubmit(data, password, email, userId, callback)}
+        onPress={() =>
+          onSubmit(data, password, state.email, state.data.usr_id, callback)
+        }
         buttonStyle={{ backgroundColor: "orange" }}
       />
       <Text> {message ? message.message : null}</Text>

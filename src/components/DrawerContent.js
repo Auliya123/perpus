@@ -21,14 +21,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { Context as AuthContext } from "../context/AuthContext";
 
 export default function DrawerContent(props) {
-  const { state, getName } = useContext(AuthContext);
+  const { state } = useContext(AuthContext);
   console.log(`state`, state);
-
-  useEffect(() => {
-    if (state.data) {
-      getName(state.data.usr_id);
-    }
-  }, []);
 
   return (
     <View style={{ flex: 1 }}>

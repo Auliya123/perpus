@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { View, Text } from "react-native";
 import VerifyInput from "../components/VerifyInput";
 import { Context as ProfileContext } from "../context/ProfileContext";
@@ -8,6 +8,15 @@ const VerifyProfileScreen = ({ route, navigation }) => {
   const { updateProfile } = useContext(ProfileContext);
   console.log(`data`, data);
   console.log(`userId`, userId);
+
+  useEffect(
+    () =>
+      navigation.addListener("beforeRemove", (e) => {
+        e.preventDefault();
+      }),
+    [navigation]
+  );
+
   return (
     <>
       <VerifyInput

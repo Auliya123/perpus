@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Context as ReturnContext } from "../context/ReturnContext";
 import VerifyInput from "../components/VerifyInput";
 
@@ -7,6 +7,14 @@ const VerifyReturnScreen = ({ route, navigation }) => {
   const { id } = route.params;
 
   console.log(`state`, state);
+
+  useEffect(
+    () =>
+      navigation.addListener("beforeRemove", (e) => {
+        e.preventDefault();
+      }),
+    [navigation]
+  );
 
   return (
     <>
