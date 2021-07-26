@@ -6,6 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
+  Alert,
 } from "react-native";
 import { Context as BorrowContext } from "../context/BorrowContext";
 import HeaderCustom from "../components/HeaderCustom";
@@ -40,9 +41,16 @@ const CheckoutScreen = ({ navigation }) => {
     : 0;
 
   console.log(`total`, total);
+  console.log(`cart is`, state.cartItems.length != 0);
+  console.log(`checked`, checked);
+  console.log(`state.cartItems is`, checked && state.cartItems.length === 0);
 
   // const handleTextEnd = () =>
   //   endDate ? endDate.toDateString() : "No value Selected";
+
+  if (state.cartItems.length == 0) {
+    alert("Harap Tambahkan Buku Untuk Melanjutkan");
+  }
 
   return (
     <>
@@ -138,6 +146,8 @@ const CheckoutScreen = ({ navigation }) => {
               containerStyle={styles.date}
               onDateChange={(date) => setEndDate(date)}
               text={endDate.toDateString("ddd MMMM D YYYY")}
+              minimumDate={Moment().add(1, "days").toDate()}
+              isNullable={false}
             />
           </View>
         </View>
@@ -204,7 +214,7 @@ const CheckoutScreen = ({ navigation }) => {
 
         <Button
           title="Lanjutkan peminjaman"
-          disabled={checked === false ? true : false}
+          disabled={checked && state.cartItems.length != 0 ? false : true}
           onPress={() => {
             checkout(state.cartItems, startDate, endDate, total, () =>
               navigation.navigate("VerifyBorrow")

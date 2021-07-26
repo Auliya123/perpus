@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import createDataContext from "./createDataContext";
 import bookApi from "../api/bookApi";
+import { Alert } from "react-native";
 
 const borrowReducer = (state, action) => {
   switch (action.type) {
@@ -70,13 +71,10 @@ const addCart = (dispatch) => (product, items, callback) => {
 };
 
 const deleteCart = (dispatch) => (product, items, type, callback) => {
-  // console.log(`items`, items);
+  console.log(`items`, items);
   let cartItems = items.slice();
 
-  console.log("coba");
   console.log("product", product);
-
-  console.log(`coba`);
 
   let alreadyExists = false;
 
@@ -85,22 +83,45 @@ const deleteCart = (dispatch) => (product, items, type, callback) => {
       console.log(`x`, x);
       if (x.book_id === product.book_id) {
         alreadyExists = true;
-        x.qty--;
+        if (product.qty <= 1) {
+          Alert.alert("Hapus", "Apakah Anda yakin untuk menghapus?", [
+            {
+              text: "Tidak",
+              onPress: () => {},
+            },
+            {
+              text: "Ya",
+              onPress: deleteBook,
+            },
+          ]);
+        } else {
+          x.qty--;
+          dispatchAction();
+        }
       }
     });
   }
 
-  if (type === "deleteAll") {
+  function deleteBook() {
     console.log("hello");
-
-    cartItems = items.slice().filter((x) => x.book_id !== product.book_id);
+    console.log(cartItems);
+    cartItems = items.slice().filter((x) => console.log(`ini x`, x));
     console.log("cart", cartItems);
+    dispatchAction();
   }
 
-  dispatch({
-    type: "addCart",
-    payload: { cartItems },
-  });
+  function dispatchAction() {
+    dispatch({
+      type: "addCart",
+      payload: { cartItems },
+    });
+  }
+
+  // console.log(`cartItems`, cartItems);
+
+  if (type === "deleteAll") {
+    deleteBook();
+  }
 
   console.log(`cartItems`, cartItems);
   if (callback) {
