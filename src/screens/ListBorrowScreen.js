@@ -8,6 +8,7 @@ import {
   Button,
   Image,
   ActivityIndicator,
+  BackHandler,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Header, Card, Divider } from "react-native-elements";
@@ -25,32 +26,13 @@ const ListBorrowScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [pageCurrent, setPageCurrent] = useState(1);
 
-  // const getData = async () => {
-  //   console.log("getData");
-  //   const apiURL =
-  //     "https://jsonplaceholder.typicode.com/photos?_limit=10&_page=" +
-  //     pageCurrent;
-  //   fetch(apiURL)
-  //     .then((res) => res.json())
-  //     .then((resJSON) => {
-  //       setData(data.concat(resJSON));
-  //       setIsLoading(false);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   console.log("useEffect");
-  //   setIsLoading(true);
-  //   fetchReturn(pageCurrent);
-  //   setData(data.concat(state));
-  //   setIsLoading(false);
-  //   return () => {};
-  // }, [pageCurrent]);
-
   const Tab = createMaterialTopTabNavigator();
 
   useEffect(() => {
     fetchReturn();
+    BackHandler.addEventListener("hardwareBackPress", () =>
+      navigation.goBack()
+    );
     const willFocusSubscription = navigation.addListener("focus", () => {
       fetchReturn();
     });
@@ -58,17 +40,6 @@ const ListBorrowScreen = ({ navigation }) => {
   }, []);
 
   console.log(`page`, state);
-  // console.log("dataa", data);
-
-  // const renderItem = ({ item }) => {
-  //   return (
-  //     <View style={styles.content}>
-  //       <Text style={styles.itemText}>
-  //         {Moment(item.start_date).format("DD MMM YYYY")}
-  //       </Text>
-  //     </View>
-  //   );
-  // };
 
   const renderFooter = () => {
     return isLoading ? (
@@ -77,12 +48,6 @@ const ListBorrowScreen = ({ navigation }) => {
       </View>
     ) : null;
   };
-
-  // const handleLoadMore = () => {
-  //   console.log(`handleMore`);
-  //   setPageCurrent(pageCurrent + 1);
-  //   setIsLoading(true);
-  // };
 
   function BorrowScreen() {
     return (
@@ -123,8 +88,6 @@ const ListBorrowScreen = ({ navigation }) => {
           }}
           keyExtractor={(item) => item.id.toString()}
           ListFooterComponent={renderFooter}
-          // onEndReached={handleLoadMore}
-          // onEndReachedThreshold={1}
         />
       </View>
     );

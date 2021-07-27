@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, Button } from "react-native";
+import { View, StyleSheet, Button, BackHandler } from "react-native";
 import { Context as BookContext } from "../context/BookContext";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "react-native-elements";
@@ -17,6 +17,9 @@ const BookDetailScreen = ({ route, navigation }) => {
 
   useEffect(() => {
     fetchDetailBook(id);
+    BackHandler.addEventListener("hardwareBackPress", () =>
+      navigation.goBack()
+    );
   }, []);
 
   console.log(`oldContextValue`, oldContextValue);

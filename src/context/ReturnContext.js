@@ -23,7 +23,7 @@ const returnReducer = (state, action) => {
 };
 
 const fetchReturn = (dispatch) => async (page) => {
-  const response = await bookApi.get(`/borrow/index/10`);
+  const response = await bookApi.get(`/borrow/index/1`);
   const data = response.data.data;
   console.log(`data fetch`, data);
 
