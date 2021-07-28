@@ -105,7 +105,7 @@ const deleteCart = (dispatch) => (product, items, type, callback) => {
   function deleteBook() {
     console.log("hello");
     console.log(cartItems);
-    cartItems = items.slice().filter((x) => console.log(`ini x`, x));
+    cartItems = items.slice().filter((x) => x.book_id !== product.book_id);
     console.log("cart", cartItems);
     dispatchAction();
   }
