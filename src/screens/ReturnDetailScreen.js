@@ -39,7 +39,13 @@ const ReturnDetailScreen = ({ route, navigation }) => {
               <Text style={styles.greenText}>
                 {Moment(state.data.borrow.start_date).format("DD MMMM YYYY")}
               </Text>
-              <Text style={styles.greenText}>
+              <Text
+                style={
+                  state.data.borrow.end_date <= Moment().format()
+                    ? styles.redText
+                    : style.greenText
+                }
+              >
                 {Moment(state.data.borrow.end_date).format("DD MMMM YYYY")}
               </Text>
             </View>
@@ -57,10 +63,12 @@ const ReturnDetailScreen = ({ route, navigation }) => {
               renderItem={({ item }) => {
                 return (
                   <>
-                    <View style={styles.detailBook}>
-                      <Text>{item.title}</Text>
-                      <Text style={styles.detail}>Oleh: {item.author}</Text>
-                    </View>
+                    <Spacer>
+                      <View style={styles.detailBook}>
+                        <Text>{item.title}</Text>
+                        <Text style={styles.detail}>Oleh: {item.author}</Text>
+                      </View>
+                    </Spacer>
                   </>
                 );
               }}
@@ -81,6 +89,20 @@ const ReturnDetailScreen = ({ route, navigation }) => {
                 )}
               />
             </View>
+            {state.data.borrow.end_date <= Moment().format() ? (
+              <View style={styles.tanggal}>
+                <Text>Denda</Text>
+                <NumberFormat
+                  value={state.bookDetail[0].fineamt}
+                  displayType={"text"}
+                  thousandSeparator={true}
+                  prefix={"Rp. "}
+                  renderText={(formattedValue) => (
+                    <Text style={styles.redText}>{formattedValue}</Text>
+                  )}
+                />
+              </View>
+            ) : null}
           </View>
           <View style={styles.buttonElement}>
             <Button
@@ -113,6 +135,10 @@ const styles = StyleSheet.create({
   },
   greenText: {
     color: "#39A6A3",
+    fontWeight: "bold",
+  },
+  redText: {
+    color: "red",
     fontWeight: "bold",
   },
   detailBook: {

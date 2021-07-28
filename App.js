@@ -29,6 +29,7 @@ import VerifyProfileScreen from "./src/screens/VerifyProfileScreen";
 import SuccessfulBorrowScreen from "./src/screens/SuccessfulBorrowScreen";
 import ListBorrowScreen from "./src/screens/ListBorrowScreen";
 import DrawerContent from "./src/components/DrawerContent";
+import SuccessfulProfileScreen from "./src/screens/SuccessfullProfileScreen";
 
 function Drawer() {
   const Drawer = createDrawerNavigator();
@@ -68,6 +69,10 @@ function App() {
           component={SuccessfulReturnScreen}
         />
         <Stack.Screen name="VerifyProfile" component={VerifyProfileScreen} />
+        <Stack.Screen
+          name="SuccessfulProfile"
+          component={SuccessfulProfileScreen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

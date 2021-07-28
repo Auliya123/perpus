@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   Text,
+  BackHandler,
 } from "react-native";
 import { Header, Card } from "react-native-elements";
 import { Context as BookContext } from "../context/BookContext";
@@ -30,27 +31,22 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     fetchBooks();
+    BackHandler.addEventListener("hardwareBackPress", () => true);
     const willFocusSubscription = navigation.addListener("focus", () => {
       fetchBooks();
     });
     return willFocusSubscription;
   }, []);
 
-  useEffect(
-    () =>
-      navigation.addListener("beforeRemove", (e) => {
-        e.preventDefault();
-      }),
-    [navigation]
-  );
-
   useEffect(() => {
-    getName(data.usr_id);
-
-    const willFocusSubscription = navigation.addListener("focus", () => {
+    if (data) {
       getName(data.usr_id);
-    });
-    return willFocusSubscription;
+
+      const willFocusSubscription = navigation.addListener("focus", () => {
+        getName(data.usr_id);
+      });
+      return willFocusSubscription;
+    }
   }, [data]);
 
   return (

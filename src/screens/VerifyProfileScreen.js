@@ -23,7 +23,7 @@ const VerifyProfileScreen = ({ route, navigation }) => {
         data={{ userId: userId, data: data }}
         buttonTitle="Proses Perubahan"
         onSubmit={updateProfile}
-        callback={() => navigation.navigate("SuccessfulReturn")}
+        callback={() => navigation.navigate("SuccessfulProfile")}
       />
     </>
   );

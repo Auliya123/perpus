@@ -47,10 +47,9 @@ const fetchReturnDetail = (dispatch) => async (id) => {
       title: detailBook.data.data.name,
       id: detailBook.data.data.id,
       author: detailBook.data.data.author,
+      fineamt: detailBook.data.data.fineamt,
     });
     console.log("itemhi", items);
-    console.log("items", items);
-    console.log("items ada isinya");
     dispatch({
       type: "fetch_return_detail",
       payload: { ...response.data, bookDetail: items },
