@@ -6,7 +6,14 @@ import { Input, Button } from "react-native-elements";
 import { Context as AuthContext } from "../context/AuthContext";
 import { Ionicons } from "@expo/vector-icons";
 
-const VerifyInput = ({ data, buttonTitle, onSubmit, callback, message }) => {
+const VerifyInput = ({
+  data,
+  buttonTitle,
+  onSubmit,
+  callback,
+  message,
+  callbackError,
+}) => {
   const { state } = useContext(AuthContext);
   const [password, setPassword] = useState("");
   const [isTextSecure, setIsTextSecure] = useState(true);
@@ -39,7 +46,14 @@ const VerifyInput = ({ data, buttonTitle, onSubmit, callback, message }) => {
       <Button
         title={buttonTitle}
         onPress={() =>
-          onSubmit(data, password, state.email, state.data.usr_id, callback)
+          onSubmit(
+            data,
+            password,
+            state.email,
+            state.data.usr_id,
+            callback,
+            callbackError
+          )
         }
         buttonStyle={{ backgroundColor: "orange" }}
       />

@@ -24,6 +24,7 @@ const VerifyBorrowScreen = ({ navigation }) => {
         onSubmit={peminjaman}
         callback={() => navigation.navigate("SuccessfulBorrow")}
         message={state.message}
+        callbackError={() => navigation.navigate("FailedBorrow")}
       />
     </>
   );

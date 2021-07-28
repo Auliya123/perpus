@@ -48,69 +48,74 @@ const CheckoutScreen = ({ navigation }) => {
   // const handleTextEnd = () =>
   //   endDate ? endDate.toDateString() : "No value Selected";
 
-  if (state.cartItems.length == 0) {
-    alert("Harap Tambahkan Buku Untuk Melanjutkan");
-  }
+  // if (state.cartItems.length == 0) {
+  //   alert("Harap Tambahkan Buku Untuk Melanjutkan");
+  // }
 
   return (
     <>
       <HeaderCustom callback={() => navigation.goBack()} title="Pinjam Buku" />
       <View style={styles.body}>
         <Text style={styles.title}>Daftar buku yang akan dipinjam</Text>
-        <FlatList
-          data={state.cartItems}
-          renderItem={({ item }) => {
-            console.log(`item`, item);
-            console.log(`state.cartItems`, state.cartItems);
-            return (
-              <View style={styles.detailBook}>
-                <Image
-                  source={{
-                    uri:
-                      "https://images-na.ssl-images-amazon.com/images/I/51vSbWpF+dS._AC_SX184_.jpg",
-                  }}
-                  style={styles.imageBook}
-                />
-                <View style={styles.detailBookText}>
-                  <Text style={styles.bookName}>{item.name}</Text>
-                  <Text>Oleh {item.author}</Text>
-                  <SafeAreaView style={styles.counter}>
-                    <Button
-                      title="-"
-                      buttonStyle={styles.buttonCounter}
-                      type="outline"
-                      onPress={() => {
-                        deleteCart(item, state.cartItems, "deleteOne", null);
-                      }}
-                    />
-                    <TextInput
-                      value={item.qty.toString()}
-                      style={styles.inputCounter}
-                      keyboardType="numeric"
-                    />
-                    <Button
-                      title="+"
-                      buttonStyle={styles.buttonCounter}
-                      onPress={() => {
-                        addCart(item, state.cartItems, null);
-                      }}
-                      type="outline"
-                    />
-                    <Button
-                      buttonStyle={styles.buttonTrash}
-                      type="outline"
-                      icon={<Icon name="trash" size={15} color="gray" />}
-                      onPress={() => {
-                        deleteCart(item, state.cartItems, "deleteAll", null);
-                      }}
-                    />
-                  </SafeAreaView>
+        {state.cartItems ? (
+          <FlatList
+            data={state.cartItems}
+            renderItem={({ item }) => {
+              console.log(`item`, item);
+              console.log(`state.cartItems`, state.cartItems);
+              return (
+                <View style={styles.detailBook}>
+                  <Image
+                    source={{
+                      uri:
+                        "https://images-na.ssl-images-amazon.com/images/I/51vSbWpF+dS._AC_SX184_.jpg",
+                    }}
+                    style={styles.imageBook}
+                  />
+                  <View style={styles.detailBookText}>
+                    <Text style={styles.bookName}>{item.name}</Text>
+                    <Text>Oleh {item.author}</Text>
+                    <SafeAreaView style={styles.counter}>
+                      <Button
+                        title="-"
+                        buttonStyle={styles.buttonCounter}
+                        type="outline"
+                        onPress={() => {
+                          deleteCart(item, state.cartItems, "deleteOne", null);
+                        }}
+                      />
+                      <TextInput
+                        value={item.qty.toString()}
+                        style={styles.inputCounter}
+                        keyboardType="numeric"
+                      />
+                      <Button
+                        title="+"
+                        buttonStyle={styles.buttonCounter}
+                        onPress={() => {
+                          addCart(item, state.cartItems, null);
+                        }}
+                        type="outline"
+                      />
+                      <Button
+                        buttonStyle={styles.buttonTrash}
+                        type="outline"
+                        icon={<Icon name="trash" size={15} color="gray" />}
+                        onPress={() => {
+                          deleteCart(item, state.cartItems, "deleteAll", null);
+                        }}
+                      />
+                    </SafeAreaView>
+                  </View>
                 </View>
-              </View>
-            );
-          }}
-          keyExtractor={(item) => item.book_id.toString()}
-        />
+              );
+            }}
+            keyExtractor={(item) => item.book_id.toString()}
+          />
+        ) : (
+          <Text>Cart Kosong</Text>
+        )}
+
         <TouchableOpacity onPress={() => navigation.navigate("Home")}>
           <Text style={styles.addBook}>
             <FontAwesome name="plus" size={15} /> Tambah buku lainnya
@@ -208,6 +213,7 @@ const CheckoutScreen = ({ navigation }) => {
           checked={checked}
           onPress={() => setChecked(!checked)}
         />
+        <Spacer />
 
         <Button
           title="Lanjutkan peminjaman"

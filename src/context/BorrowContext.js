@@ -4,6 +4,7 @@ import bookApi from "../api/bookApi";
 import { Alert } from "react-native";
 
 const borrowReducer = (state, action) => {
+  console.log(`state`, state);
   switch (action.type) {
     case "addCart":
       return {
@@ -19,7 +20,7 @@ const borrowReducer = (state, action) => {
     }
     case "peminjaman": {
       return {
-        ...state,
+        cartItems: [],
         message: action.payload.message,
       };
     }
@@ -159,22 +160,22 @@ const peminjaman = (dispatch) => async (
   password,
   email,
   userId,
-  callback
+  callback,
+  callbackError
 ) => {
-  console.log(`data`, data);
-
   const verify = await bookApi.post("/verified", {
     email: email,
     password: password,
   });
 
   console.log(verify);
+  console.log(`data.cartItems`, data.cartItems);
 
   if (verify.data.status === true) {
     const response = await bookApi.post("/borrow/create", {
       borrow: {
         start_date: data.startDate,
-        end_date: data.endDate,
+        end_date: data.endDate.toString(),
         usr_id: userId,
         status: "N",
         total: data.total,
@@ -189,10 +190,12 @@ const peminjaman = (dispatch) => async (
     });
     if (callback && response.data.status === true) {
       callback();
+    } else if (callbackError && response.data.status === false) {
+      callbackError();
     }
   } else {
     dispatch({
-      type: "peminjaman",
+      type: "FailedBorrow",
       payload: { message: response.data.message },
     });
   }
