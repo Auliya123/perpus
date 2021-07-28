@@ -21,7 +21,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Context as AuthContext } from "../context/AuthContext";
 
 export default function DrawerContent(props) {
-  const { state } = useContext(AuthContext);
+  const { state, logout } = useContext(AuthContext);
   console.log(`state`, state);
 
   return (
@@ -80,9 +80,7 @@ export default function DrawerContent(props) {
           icon={({ color, size }) => (
             <Ionicons name="exit-outline" color={color} size={size} />
           )}
-          onPress={() => {
-            props.navigation.navigate("Logout");
-          }}
+          onPress={logout}
         />
       </Drawer.Section>
     </View>

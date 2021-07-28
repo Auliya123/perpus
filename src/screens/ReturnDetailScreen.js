@@ -146,7 +146,11 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "orange",
-    marginTop: "130%",
+  },
+  buttonElement: {
+    justifyContent: "flex-end",
+    position: "relative",
+    top: 10,
   },
 });
 

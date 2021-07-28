@@ -206,11 +206,8 @@ const CheckoutScreen = ({ navigation }) => {
           size={20}
           containerStyle={{ width: "90%", marginTop: 50 }}
           checked={checked}
-          onPress={() => setChecked(true)}
-          onLongPress={() => setChecked(false)}
+          onPress={() => setChecked(!checked)}
         />
-        <Spacer />
-        <Spacer />
 
         <Button
           title="Lanjutkan peminjaman"
